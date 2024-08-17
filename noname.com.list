@@ -1,0 +1,123 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+noname.com -- emu8086 assembler version: 4.08  
+ 
+[ 8/8/2024  --  12:35:37 PM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       DATA SEGMENT
+[   2]        :                                       
+[   3]        :                                       PORTA EQU 00H        ;ADDRESS OF PORTA
+[   4]        :                                       PORTB EQU 02H        ;ADDRESS OF PORTB
+[   5]        :                                       PORTC EQU 04H        ;ADDRESS OF PORD
+[   6]        :                                       CONFIG EQU 06H        ;ADDRESS OF CONFIG
+[   7]        :                                       
+[   8]        :                                       ENDS
+[   9]        :                                       CODE SEGMENT
+[  10]        :                                       
+[  11]        :                                       ORG 100H
+[  12]        :                                       
+[  13]    0100: BA 06 00                              MOV DX, CONFIG
+[  14]    0103: B0 80                                 MOV AL, 10000000B       ; PORTA=OUT/MODE 0, PORTB=OUT/MODE 0, PORTC OUT
+[  15]    0105: EE                                    OUT DX, AL
+[  16]        :                                       
+[  17]    0106:                                       START:
+[  18]        :                                       
+[  19]        :                                       ;1/
+[  20]    0106: BA 00 00                              MOV DX, PORTA
+[  21]    0109: B0 54                                 MOV AL, 01010100B       ; FOR CONTROL LED IN TRAFFIC LIGHT
+[  22]    010B: EE                                    OUT DX, AL
+[  23]        :                                       
+[  24]    010C: BA 02 00                              MOV DX, PORTB
+[  25]    010F: B0 49                                 MOV AL, 01001001B
+[  26]    0111: EE                                    OUT DX, AL
+[  27]        :                                       
+[  28]    0112: E8 48 00                              CALL DEALY              ; DEALY HERE BY SUBROUTINE
+[  29]        :                                       
+[  30]        :                                       ;2/
+[  31]    0115: BA 00 00                              MOV DX, PORTA
+[  32]    0118: B0 61                                 MOV AL, 01100001B
+[  33]    011A: EE                                    OUT DX, AL
+[  34]        :                                       
+[  35]    011B: BA 02 00                              MOV DX, PORTB
+[  36]    011E: B0 4A                                 MOV AL, 01001010B
+[  37]    0120: EE                                    OUT DX, AL
+[  38]        :                                       
+[  39]    0121: E8 39 00                              CALL DEALY
+[  40]        :                                       
+[  41]        :                                       ;3/
+[  42]    0124: BA 00 00                              MOV DX, PORTA
+[  43]    0127: B0 49                                 MOV AL, 01001001B
+[  44]    0129: EE                                    OUT DX, AL
+[  45]        :                                       
+[  46]    012A: BA 02 00                              MOV DX, PORTB
+[  47]    012D: B0 54                                 MOV AL, 01010100B
+[  48]    012F: EE                                    OUT DX, AL
+[  49]        :                                       
+[  50]    0130: E8 2A 00                              CALL DEALY
+[  51]        :                                       
+[  52]        :                                       ;4/
+[  53]    0133: BA 00 00                              MOV DX, PORTA
+[  54]    0136: B0 89                                 MOV AL, 10001001B
+[  55]    0138: EE                                    OUT DX, AL
+[  56]        :                                       
+[  57]    0139: BA 02 00                              MOV DX, PORTB
+[  58]    013C: B0 21                                 MOV AL, 00100001B
+[  59]    013E: EE                                    OUT DX, AL
+[  60]        :                                       
+[  61]    013F: E8 1B 00                              CALL DEALY
+[  62]        :                                       
+[  63]        :                                       ;5/
+[  64]    0142: BA 00 00                              MOV DX, PORTA
+[  65]    0145: B0 0A                                 MOV AL, 00001010B
+[  66]    0147: EE                                    OUT DX, AL
+[  67]        :                                       
+[  68]    0148: BA 02 00                              MOV DX, PORTB
+[  69]    014B: B0 89                                 MOV AL, 10001001B
+[  70]    014D: EE                                    OUT DX, AL
+[  71]        :                                       
+[  72]    014E: E8 0C 00                              CALL DEALY
+[  73]        :                                       
+[  74]    0151: EB B3                                 JMP START        ;LOOP FOR EVER
+[  75]        :                                       
+[  76]    0153: 90                                    S1  DB 10010000B
+[  77]    0154: 80                                    DB 10000000B
+[  78]    0155: D8                                    DB 11011000B
+[  79]    0156: 82                                    DB 10000010B    ;FOR CONTROL LED FROM 7_SEGMENT
+[  80]    0157: 92                                    DB 10010010B
+[  81]    0158: 99                                    DB 10011001B    ; FOR VIEW THE NUMBER
+[  82]    0159: B0                                    DB 10110000B
+[  83]    015A: A4                                    DB 10100100B
+[  84]    015B: F9                                    DB 11111001B
+[  85]    015C: C0                                    DB 11000000B
+[  86]        :                                       
+[  87]        :                                       CODE ENDS
+[  88]        :                                       
+[  89]    015D:                                       DEALY:
+[  90]        :                                       
+[  91]    015D: BE 00 00                              MOV SI, 0
+[  92]        :                                       
+[  93]    0160: B9 0F 00                              L0: MOV CX, 0FH
+[  94]    0163: 8A 84 53 01                           L1: MOV AL, S1[SI]    ;FOR VIEW THE CONTAIN S1 BY INCREMENT POINTER SI
+[  95]    0167: BA 04 00                              MOV DX, PORTC
+[  96]    016A: EE                                    OUT DX, AL
+[  97]    016B: E2 F6                                 LOOP L1                ;FOR DEALY THE CONTER INTO THE 7_SEGMEMENT
+[  98]        :                                       
+[  99]    016D: 46                                    INC SI
+[ 100]    016E: 83 FE 0A                              CMP SI, 10
+[ 101]    0171: 7C ED                                 JL L0
+[ 102]    0173: C3                                    RET
+[ 103]        :                                       
+[ 104]        :                                       END
+[ 105]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================
